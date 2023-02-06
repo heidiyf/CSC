@@ -1,0 +1,273 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.75in]{geometry}
+
+% This defines a new LaTeX *macro* (you can think of as a function)
+% for writing the floor of an expression.
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+
+\title{CSC110 Fall 2022 Assignment 4: Loops, Mutation, and Applications}
+\author{Heidi Wang}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+
+\section*{Part 1: Proofs}
+
+\begin{enumerate}
+\item[1.] Statement to prove:
+$\forall a, b, n \in \mathbb{Z},~ \big(n \neq 0 \land a \equiv b \pmod n \big) \Rightarrow \big(\forall m \in \mathbb{Z},~ a \equiv b + mn \pmod n\big)$
+
+\begin{proof}
+let $a, b, n \in \mathbb{Z}$.\\
+Assume $n\neq 0$ \\
+Assume $a \equiv b$\hspace{1mm}(mod n). i.e. $n\mid a-b \implies \exists k_{1} \in \mathbb{Z}$ s.t. $k_{1}n = (a-b)$\\
+Let $m \in \mathbb{Z}$ \\
+\\
+Want to show that $~ a \equiv b + mn$ (mod n). i.e. $n\mid a - (b + mn) \implies \exists k_{2}
+\in \mathbb{Z}$ s.t. $k_{2}n = (a - (b + mn))$ \\
+\\
+Take $k_{2} = k_{1} - m$\\
+Since  $k_{1}n = (a-b)$ then $k_{1} = \frac{a-b}{n}$ \\
+Then $k_{2} = \frac{a-b}{n} - m$ \\
+$k_{2}n = n(\frac{a-b}{n} - m) = (a-b) - mn = (a - (b + mn)) $ \\
+We have proved $k_{2}n = (a - (b + mn))$ as required.
+
+\end{proof}
+
+\newpage
+
+\item[2.] Statement to prove:
+$
+\forall f, g: \mathbb{Z} \to \mathbb{R}^{\geq 0},~
+\Big(g \in \mathcal{O}(f) \land \big(\forall m \in \mathbb{N},~ f(m) \geq 1) \Big) \Rightarrow
+g \in \mathcal{O}(\floor{f})
+$
+
+\begin{proof}
+let $f, g: \mathbb{Z} \to \mathbb{R}^{\geq 0}$\\
+let $n \in \mathbb{Z}$\\
+Assume $g \in \mathcal{O}(f)$ i.e. $\exists c_{1}, n_{1} \in \mathbb{R}^{+}, \forall n \in \mathbb{N}, n\geq n_{1} \implies g(n) \leq c_{1} \cdot f(n)$ \\
+Assume $\forall m \in \mathbb{N}, f(m) \geq 1$\\
+\\
+Want to show $g \in \mathcal{O}(\floor{f})$ i.e. $\exists c_{2}, n_{2} \in \mathbb{R}^{+}, \forall n \in \mathbb{N}, n\geq n_{2} \implies g(n) \leq c_{2} \cdot \floor{f(n)}$ \\
+Take $c_{2} = 2c_{1}, \hspace{2mm} n_{2} = n_{1}$ \\
+Assume $n \in \mathbb{N}, n \geq n_{1}$\\
+\\
+\textbf{Want to prove $g(n) \leq c_{2} \cdot \floor{f(n)}$} \\
+\\
+Since $\forall m \in \mathbb{N},~ f(m) \geq 1$\\
+Thus $\forall n \in \mathbb{N},~f(n) \geq 1 $\\
+\\
+Floor Property indicates:
+$\floor{f(n)} \leq f(n) < \floor{f(n)} + 1$\\
+\\
+$f(n)\geq 1 \Rightarrow \floor{f(n)} \geq 1$\\
+$\floor{f(n)} + 1 \leq 2\cdot\floor{f(n)}$\\
+$f(n) < \floor{f(n)} + 1 \leq 2\cdot \floor{f(n)}$\\
+$f(n)< 2\cdot \floor{f(n)}$\\
+$c_{1} \cdot f(n)< 2c_{1}\cdot \floor{f(n)}$\\
+\\
+Since $g(n) \leq c_{1} \cdot f(n)$ \\
+$g(n) \leq c_{1} \cdot f(n) < 2c_{1} \cdot \floor{f(n)}$ \\
+$g(n)< 2c_{1} \cdot \floor{f(n)}$ \\
+Since $c_{2} = 2c_{1}$ \\
+$g(n) < c_{2} \cdot \floor{f(n)}$ \\
+Strictly less than implies less than or equal to. We have proved $g(n) \leq c_{2} \cdot \floor{f(n)}$ as required.
+
+\end{proof}
+\end{enumerate}
+
+\newpage
+
+
+\section*{Part 2: Running-Time Analysis}
+
+\begin{enumerate}
+\item[1.]
+Function to analyse:
+
+\begin{verbatim}
+def f1(n: int) -> int:
+    """Precondition: n >= 0"""
+    total = 0
+
+    for i in range(0, n):  # Loop 1
+        total += i ** 2
+
+    for j in range(0, total):  # Loop 2
+        print(j)
+
+    return total
+\end{verbatim}
+
+The assignment statement $total = 0$ counts as 1 step, as its running time does not depend on the number of elements. \\
+\\
+Loop 1 has n iterations since i goes from 0 to n - 1, and each iteration counts as 1 step since it simply calls i and add i to $total$.\\
+\\
+Loop 2 iterates j $total$ times, since $total$ is the summation of i ** 2 where i is all numbers from 0 to n - 1. Based on the formula: $\sum_{i=0}^{n}i^{2} = \frac{n(n+1)(2n+1)}{6}$ so a total of $\sum_{i=0}^{n-1}i^{2} = \frac{n(n-1)(2n-1)}{6}$\\
+\\
+The return statement counts as 1 step, as its running time does not depend on the number of elements.\\
+\\
+Combine all parts of this function, the sum is $1 + n + \frac{n(n-1)(2n-1)}{6} + 1 = 2 + n + \frac{n(n-1)(2n-1)}{6}$, which gives $\Theta(n^{3})$
+
+\newpage
+
+
+\item[2.]
+Function to analyse:
+
+\begin{verbatim}
+def f2(n: int) -> int:
+    """Precondition: n >= 0"""
+    sum_so_far = 0
+
+    for i in range(0, n):  # Loop 1
+        sum_so_far += i
+
+        if sum_so_far >= n:
+            return sum_so_far
+
+    return 0
+\end{verbatim}
+
+The assignment statement sum\_so\_far = 0 counts as 1 step, as its running time does not depend on the number of elements. \\
+\\
+let variable m represents the last value that i calls in Loop 1 which when we add m to sum\_so\_far, the function will return sum\_so\_far as it is greater than or equal to n. sum\_so\_far = $\sum_{i=0}^{m}i = \frac{m(m+1)}{2}$
+\begin{center}
+    $\frac{m(m+1)}{2} = n$\\
+    $m(m+1)=2n$ \\
+    $m^{2} + m = 2n$\\
+    $m^{2} + m - 2n = 0$ \\
+    we can apply the quadratic formula : $$x=\frac{-b\pm \sqrt{b^2-4ac}}{2a}.$$\\
+    $m=\frac{-1\pm \sqrt{(1)^2-4(1)(-2n)}}{2}.$\\
+    $m=\frac{-1\pm \sqrt{1+8n}}{2}.$ \\
+    We omit the negative option since m cannot be negative. Thus $m=\frac{-1 + \sqrt{1+8n}}{2}.$ \\
+    We round up the m to the nearest integer, so $m =\ceil{\frac{-1 + \sqrt{1+8n}}{2}}.$
+\end{center}
+At the end of the loop, if find such m that is greater than or equal to n, then it early returns the sum\_so\_far. Therefore this loop will iterates m + 1 times and each time only counts as 1 step.\\
+\\
+When the function exits the loop, the return statement counts as 1 step, as its running time does not depend on the number of elements.\\
+\\
+So the running time is $1+\ceil{\frac{-1 + \sqrt{1+8n}}{2}} + 1$ which is $\Theta(\sqrt{n})$
+
+
+\end{enumerate}
+
+\newpage
+
+\section*{Part 3: Extending RSA}
+
+Complete this part in the provided \texttt{a4\_part3.py} starter file.
+Do \textbf{not} include your solutions in this file.
+
+\section*{Part 4: Digital Signatures}
+
+\subsection*{Part (a): Introduction}
+
+Complete this part in the provided \texttt{a4\_part4.py} starter file.
+Do \textbf{not} include your solutions in this file.
+
+\subsection*{Part (b): Generalizing the message digests}
+
+Complete most of this part in the provided \texttt{a4\_part4.py} starter file.
+Do \textbf{not} include your solutions in this file, \emph{except} for the following two questions:
+
+\begin{enumerate}
+
+\item[3b.]
+
+\begin{verbatim}
+def find_collision_len_times_sum() -> None:
+    m = message
+    n = ''
+    n += chr((ord(m[0]) + 3))
+    n += chr((ord(m[1]) - 3))
+    for i in range(2, len(m)):
+        n += m[i]
+    return n
+
+\end{verbatim}
+Collision occurs in this situation whenever the product of the length of the message and the sum of ascii values of all the characters of the message stays the same. For simplicity, I decided to create a variable n which stands for the new\_message and remain the length of the new message same as the original message, and only change the ascii values of two of the characters in the original message to generate a new one. I add the ascii value of the first character by 3:
+\begin{verbatim}
+m = message
+n = ''
+n += chr((ord(m[0]) + 3))
+\end{verbatim}
+and subtract the second character by 3:
+\begin{verbatim}
+n += chr((ord(m[1]) - 3))
+\end{verbatim}
+the rest remain.
+\begin{verbatim}
+for i in range(2, len(m)):
+        n += m[i]
+    return n
+\end{verbatim}
+Thus in total, the sum of all still remains the same. So the product remains the same. Since the precondition states that $len(message) >= 2$, this function also works for only 2 characters and unsure the new\_message is different from the original one.
+
+\newpage
+
+\item[4b.]
+
+\begin{verbatim}
+def find_collision_ascii_to_int() -> None:
+    new_message = ''
+    n = public_key[0]
+    digest = ascii_to_int(message) % n
+    q = (ascii_to_int(message) - digest) // n
+    int_lst = a4_part3.int_to_base128((q + 1) * n + digest)
+    for integer in int_lst:
+        new_message += chr(integer)
+    return new_message
+
+\end{verbatim}
+We are using rsa\_sign function to verify the 2 messages using private key, the message and the \textbf{digest}.
+
+The digest in this case is the output of \textbf{ascii\_to\_int(message) \% n}. The return of rsa\_sign is:
+\begin{verbatim}
+pow(digest, d, n)
+\end{verbatim}
+since d and n is fixed by the keys, we only need to ensure the digest of the two messages stays the same in order to pass the verification.
+
+Since \textbf{digest = ascii\_to\_int(message) \% n} which is the remainder when divising ascii\_to\_int(message) by n
+
+we can say the following:
+\begin{verbatim}
+ascii_to_int(message) = q * n + r
+ascii_to_int(new_message) = m * n + r
+\end{verbatim}
+The digest of the two are both r. We can simply change the q to another integer m to differ the message while ensure the digest remain.
+
+q = (ascii\_to\_int(message) - r) // n and r is the digest, therefore:
+\begin{verbatim}
+n = public_key[0]
+digest = ascii_to_int(message) % n
+q = (ascii_to_int(message) - digest) // n
+\end{verbatim}
+for simplicity, I simply make m to be q + 1. therefore since I wrote ascii\_to\_int(new
+\_message) = m * n + r, therefore
+\begin{verbatim}
+ascii_to_int(new_message) = (q + 1) * n + digest
+\end{verbatim}
+now I would like to convert this integer back to ascii list which contains the ascii value for each character. Since I used base128\_to\_int function defined in part 3 to convert the list to integer, I would need to use int\_to\_base128 to convert it back:
+\begin{verbatim}
+int_lst = a4_part3.int_to_base128((q + 1) * n + digest)
+\end{verbatim}
+At the end, I want to convert each integer which is the ascii value of each character in the list, convert it back the string of new\_message.
+\begin{verbatim}
+new_message = ’’
+
+for integer in int_lst:
+        new_message += chr(integer)
+    return new_message
+\end{verbatim}
+
+\end{enumerate}
+\end{document}
