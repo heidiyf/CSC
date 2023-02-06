@@ -1,0 +1,88 @@
+documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.75in]{geometry}
+
+\title{CSC110 Fall 2022 Assignment 1: Written Questions}
+\author{Heidi Wang}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section*{Part 1: Data and Comprehensions}
+
+\begin{enumerate}
+\item[1.] \textbf{Imagine this scenario...}
+\begin{enumerate}
+
+\item[(a)] (The total amount of money you're planning to spend on your trip.)
+\textit{\textbf{float.}} Money can be expressed accurately to cents
+
+\item[(b)] (The restaurant names in your sister's ``top ten restaurants'' message, in the order of her preferences.)
+The restaurants' names can be expressed in \textit{\textbf{list.}} data type, ranking the preferences from top to low, with \textit{\textbf{str.}} elements in the list.
+
+\item[(c)] (The number of places you are staying that have laundry service.)
+The number of places can only be expressed in \textit{\textbf{int.}}, as you cannot have 1.5 places.
+
+\item[(d)] (The names of the cities you will be visiting and the corresponding number of days you are staying in each city.)
+\textit{\textbf{dict.}} data type with keys of \textit{\textbf{str.}} data type and values of \textit{\textbf{int.}} data type if assume days are counted in whole numbers or values of \textit{\textbf{float.}} if I want to expressed for example 1.5 days to be 36 hours.
+
+\item[(e)] (Whether or not you have a valid passport.)
+\textit{\textbf{bool.}} data type as the answer to this answer is either True or False.
+
+
+\end{enumerate}
+
+\item[2.] \textbf{Exploring comprehensions.}
+
+\begin{enumerate}
+\item[(a)]
+\begin{enumerate}
+    \item[i.] This expression evaluates to \textbf{['B', 'l', 'u', 'e', 'b', 'e', 'r', 'r', 'y']}
+    \item[ii.] The value is a \textbf{\textit{list.}}, all its elements are \textbf{\textit{str.}}.
+\end{enumerate}
+\item[(b)]
+\begin{enumerate}
+    \item[i.] This expression evaluates to \textbf{\textit{\{'e', 'l', 'u', 'b', 'r', 'y', 'B'\}}}
+    \item[ii.] The value is a \textbf{\textit{set.}}, all its elements are \textbf{\textit{str}}.
+    \item[iii.] The value produced in part(a) is a \textit{\textbf{list.}} with all \textit{\textbf{str.}} elements arranged in the order of 'Blueberry', and there are duplicates in the list. Part(b) is a \textit{\textbf{set.}} in which order does not matter, all duplicates are kept as just one, leaving all elements unique in the set. Therefore, there are only 7 elements in the set, while the list has 9 elements.
+\end{enumerate}
+\item[(c)]
+The first expression evaluates to \textbf{['David!', 'Tom!', 'Mario!']}; the second expression evaluates to \textbf{['David', 'Tom', 'Mario', '!', '!', '!']}. These 2 expressions are different since the second expression has 2 lists and it evaluates the values of each list separately, and eventually combine them together. The first list simply results in the 3 names in the order of the variable \textit{names}, the second list results in 3 exclamation marks, and combine them together, results in ['David', 'Tom', 'Mario', '!', '!', '!']. The first expression, however, evaluates everything in just one list. It returns the names one by one in the order of the variable \textit{names}, and attach an exclamation mark to each name. Finally get an result of ['David!', 'Tom!', 'Mario!'].
+\end{enumerate}
+\end{enumerate}
+
+\section*{Part 2: Programming Exercises}
+
+Complete this part in the provided \texttt{a1\_part2.py} starter file.
+Do \textbf{not} include your solution in this LaTeX file.
+
+\section*{Part 3: Pytest Debugging Exercise}
+
+% TIP: In LaTeX, the underscore (_) is a special character, so if you want to use it
+% in normal text, you have to put a backslash in front of it. E.g., a1\_part2.py,
+% not a1_part2.py.
+
+\begin{enumerate}
+\item[1.]
+\texttt{test\_single\_bill} passed.  \texttt{test\_two\_customers} and \texttt{test\_just\_food} failed.
+
+
+\item[2.]
+The first problem is in the function \texttt{get\_largest\_bill} itself. Its return statement uses another defined function, \texttt{calculate\_total\_cost}, but there is a problem with the order of parameters. There are two parameters in \texttt{calculate\_total\_cost}, the order of which is the food's \texttt{menu\_amount} and then \texttt{songs}. The wrong order of parameters listed in \texttt{get\_largest\_bill} leads to the wrong argument being passed to the function, which eventually leads to the discrepancy between the actual result and the expected result.  After modifying this error, \texttt{test\_just\_food} passed the test. The problem of \texttt{test\_two\_customers} is in the test itself. The keys in the variable \texttt{bills} do not match what we are looking for in the return statement of our main function. The keys should be 'food' and 'songs' with lowercase letters. However, in \texttt{test\_two\_customers}, one accidentally wrote 'Food' and 'Songs', where the first letter of each was capitalized, which caused a KeyError because the interpreter could not find the variable desired. The problems have been edited in \texttt{a1\_part3.py}.
+
+\item[3.]
+\texttt{test\_single\_bill} passed the test before changes were made, this is because the corresponding values of both keys, 'food' and 'songs', are the same. Therefore, although the wrong key is brought to the return statement, the result is still equal to the expected value, and the test is passed.
+\end{enumerate}
+
+\section*{Part 4: Colour Rows}
+
+Complete this part in the provided \texttt{a1\_part4.py} starter file.
+Do \textbf{not} include your solution in this LaTeX file.
+
+\section*{Part 5: Working with Image Data}
+
+Complete this part in the provided \texttt{a1\_part5.py} starter file.
+Do \textbf{not} include your solution in this LaTeX file.
+
+\end{document}
