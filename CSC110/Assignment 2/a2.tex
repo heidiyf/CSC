@@ -1,0 +1,85 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.75in]{geometry}
+\usepackage{amsfonts}
+
+\title{CSC110 Fall 2022 Assignment 2: Logic, Constraints, and Wordle!}
+\author{Heidi Wang}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section*{Part 1: Conditional Execution}
+
+Complete this part in the provided \texttt{a2\_part1\_q1\_q2.py} and \texttt{a2\_part1\_q3.py} starter files.
+Do \textbf{not} include your solutions in this file.
+
+\section*{Part 2: Proof and Algorithms, Greatest Common Divisor edition}
+
+\begin{enumerate}
+\item[1.]
+
+We say d is a divisor of two non-zero integers m and n when there exist 2 integers a and b such that m = ad and n = bd. The greatest common divisor of m and n is the largest such d. In the preconditions of this function gcd(), $n \geq m \geq 1$, therefore the greatest possible common divisor of m and n is the smaller number of m and n, in this case m, when n is a multiple of m or when m equals to n. When d is bigger than m itself, there does not exist an integer a such that m = ad. Another approach we can think of this question is that the biggest divisor of m is m; the biggest divisor of n is n, therefore the greatest common divisor is m since m is less than or equal to n.
+
+
+\item[2.]
+
+Based on the definition of divisibility, let n, $d \in \mathbb{Z}$, d divides n when there exists a $k \in \mathbb{Z}$ such that $n = dk$. Using this definition, we know that every 2 numbers at least have a common divisor of 1, since we can always find a k such that k equals n. Therefore, we don't need to check for common\_divisors, since common\_divisors is never an empty collection.
+
+\item[3.]
+
+\begin{proof}\hfill\\
+let n, m, $d \in \mathbb{Z}$
+Assume $\exists k\textsubscript{1}\in \mathbb{Z}$ such that $m=dk\textsubscript{1}$ and $m \neq 0$\hfill\\
+We want to show that $\exists$ $k\textsubscript{2}\in\mathbb{Z}$ such that $n=dk\textsubscript{2}\Leftrightarrow \exists k_{3}\in\mathbb{Z}$ such that $n\%m= dk\textsubscript{3}$ \hfill\\
+\begin{center} Prove $\exists$ k$\textsubscript{2}\in\mathbb{Z}$ such that n=dk$\textsubscript{2}\implies\exists$ k$\textsubscript{3}\in\mathbb{Z}$ such that n\%m=dk$\textsubscript{3}$\colon\end{center}
+\begin{center} Since we assume $n=dk\textsubscript{2}$ and $m=dk\textsubscript{1}$\end{center}
+\begin{center} We know $n\%m = dk\textsubscript{2}-dk\textsubscript{1}l$ for $l\in \mathbb{Z}$ and $l$ is the quotient\end{center}
+\begin{center} Thus we have proved $d\mid n\%m$ since $d\mid (dk\textsubscript{2}-dk\textsubscript{1}l)$ where we can factor out the $d$\end{center}
+\begin{center} Prove $\exists k\textsubscript{3}\in \mathbb{Z}$ such that $n\%m= dk\textsubscript{3}\implies\exists k\textsubscript{2} \in\mathbb{Z}$ such that $n=dk\textsubscript{2}$\colon \end{center}
+\begin{center} case 1: $n = m$ \colon\end{center}
+\begin{center} $n\%m = 0$, thus $d\mid n\%m$. $m=dk\textsubscript{1}=n$ since $d\mid m$, therefore  $d\mid n$ \end{center}
+\begin{center} case 2: $n > m$ \colon\end{center}
+\begin{center} $n\%m = n-am$, where a is the quotient.\end{center}
+\begin{center} Since we assume  $d\mid m$. We also assume $d\mid n\%m$, which means $d\mid n-am$\end{center}
+\begin{center} Based on the given property stated in the handout, we know that $d\mid(jm+k(n-am))$, if we let $j,k = 1$, then we get $d\mid(m+(n-am))= d\mid((1-a)m+n)$\end{center}
+\begin{center}since we know $d\mid m$, thus $d\mid (1-a)m$， which also implies that $d\mid n$ \end{center}
+\begin{center} We have proved the implications in both ways as required.\end{center}
+
+\end{proof}
+
+\item[4.]
+
+I have divided the situation into two cases using the if-else statement. When n $\%$ m equals 0, this means n is a multiple of n, thus the gcd is simply m. When r doesn't equal 0, we know from question 3, if d divides m and d divides n, then d must divide n $\%$ m. Therefore, the range of the possible\_divisors can be smaller to range(1, r + 1)
+
+Make sure complete the code that has been provided below (as you will \emph{not} be submitting a Python file for this part of the assignment).
+
+\begin{verbatim}
+def gcd(n: int, m: int) -> int:
+    """Return the greatest common divisor of m and n.
+
+    Preconditions:
+    - 1 <= m <= n
+    """
+    r = n % m
+
+    if r == 0:
+        return m
+    else:
+        possible_divisors = range(1, r + 1)
+        common_divisors = {d for d in possible_divisors if divides(d, n) and divides(d, m)}
+        return max(common_divisors)
+\end{verbatim}
+\end{enumerate}
+
+
+
+\section*{Part 3: Wordle!}
+
+Complete this part in the provided \texttt{a2\_part3.py} starter file.
+Do \textbf{not} include your solutions in this file.
+
+\end{document}
