@@ -1,0 +1,66 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.75in]{geometry}
+
+\title{CSC110 Fall 2022 Assignment 3: Loops, Mutation, and Applications}
+\author{TODO: FILL IN YOUR NAME HERE}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section*{Part 1: Data Analysis with Toronto Health}
+
+Complete this part in the provided \texttt{a3\_part1.py} file.
+Do \textbf{not} include your solutions in this file.
+
+\section*{Part 2: Loops and Mutation Debugging Exercise}
+
+\begin{enumerate}
+\item[1.]
+\begin{verbatim}
+a3_part2.py::test_star_wars PASSED
+a3_part2.py::test_legally_blonde FAILED
+a3_part2.py::test_transformers FAILED
+\end{verbatim}
+
+
+
+\item[2.]
+\begin{verbatim}
+Error 1: It is in the function clean_text that converts text to lowercase.
+After the function removes punctuation from the text, we want to convert the
+text to lowercase letters and split the text into words. The problem with this code
+is that it doesn't assign it back to text after it has been converted to lowercase.
+Therefore, for the next line of code, we are still using the old text. This leads to a
+problem: when we apply the count_keywords function, words with capital letters are
+filtered out when we try to filter WORD_TO_INTENSITY.
+
+Error 2: The second problem is in count_keywords. If we find a word that matches
+WORD_TO_INTENSITY and is not already in dict, we should assign it with the dict index
+and assign a value of 1. However, if the word already appears in the previous word,
+we should simply add 1 to the original value of that corresponding key. the problem with
+this code is that it assigns a value of 0 and then directly adds 1 to its value without
+any mention of what happens when the function is already in the dict.
+\end{verbatim}
+
+\item[3.]
+\begin{verbatim}
+The reason why test_star_wars passes the test is that it does not address the problem
+mentioned in the second question. Since all words match the WORD_TO_INTENSITY in the
+review of Star Wars are fortunately lowercase, so the problem of case mismatch is not
+touched; likewise, fortunately, each word in WORD_TO_INTENSITY appears only once, so
+each word is a word that is not added to the dict, so the case of "if the word in
+occurrences_so_far" is not involved.
+\end{verbatim}
+
+\end{enumerate}
+
+\section*{Part 3: Chaos, Fractals, Point Sequences}
+
+Complete this part in the provided \texttt{a3\_part3.py} starter file.
+Do \textbf{not} include your solutions in this file.
+
+\end{document}
