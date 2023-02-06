@@ -1,0 +1,53 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.75in]{geometry}
+
+\title{CSC111 Winter 2023 Assignment 1: Linked Lists and Blockchain}
+\author{Heidi Wang}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section*{Part 1: Linked List Debugging Exercise}
+
+\begin{enumerate}
+\item[1.]
+\begin{enumerate}
+    \item[(a)]
+    The first error found is in the parallel assignment. Before the code was modified, curr was considered an unused local variable. Even though it runs successfully in the console, the result produced is incorrect. Instead of swapping the first and last elements, it returned only the last element. The reason it appears this error is because instead of swapping the item in the node, we are switching the nodes themselves which break the link between each nodes. When the last node, which has the next attribute of None, becomes the first element, it becomes the only element in the list because it has no next node linked to it. To fix this problem, I changed the assignment statement. Instead of reassigning the nodes, I reassigned the items in those nodes.
+
+    \item[(b)]
+    Complete your work for part (b) in \texttt{a1\_part1.py}.
+\end{enumerate}
+
+\item[2.]
+\begin{enumerate}
+    \item[(a)]
+    The docstring says nothing is done if there are fewer than two items in this linked list, but the code does not eliminate this; therefore, it raises an AttributeError when the linkedList in an empty list since NoneType doesn't have 'next' attribute.
+    \item[(b)]
+    Complete your work for part (b) in \texttt{a1\_part1.py}.
+\end{enumerate}
+
+\item[3.]
+\begin{enumerate}
+    \item[(a)]
+    Complete your work for part (a) in \texttt{a1\_part1.py}.
+    \item[(b)]
+    The third test passes both of the above tests despite the errors because it is a list with only one element. The first error is that it returns only the last element. Since there is only one element in the list, it does nothing, which also satisfies the instruction when which of having fewer than two items. It passes the second test because unlike the empty set, which fails due to the NoneType object not having the attribute "next," it stops at the first while loop and so successfully returns the list we expect.
+\end{enumerate}
+
+\item[4.]
+Complete your work for this question in \texttt{a1\_part1.py}.
+
+\end{enumerate}
+
+\section*{Part 2: Blockchain and Cryptocurrencies}
+
+Complete this part in the provided \texttt{a1\_part2.py} starter file.
+Do \textbf{not} include your solutions in this file.
+
+\end{document}
